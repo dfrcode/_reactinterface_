@@ -5,6 +5,8 @@ import AddAppointments from "./AddAppointments";
 import SearchAppointments from "./SearchAppointments";
 import ListAppointments from "./ListAppointments";
 
+import { without } from "lodash";
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -13,6 +15,8 @@ class App extends Component {
       appointments: [],
       lastIdx: 0,
     };
+
+    this.deleteAppointment = this.deleteAppointment.bind(this);
   }
 
   componentDidMount() {
@@ -21,7 +25,7 @@ class App extends Component {
       .then((result) => {
         const apts = result.map((item) => {
           item.aptId = this.state.lastIdx;
-          this.setState({lastIdx: this.state.lastIdx + 1});
+          this.setState({ lastIdx: this.state.lastIdx + 1 });
           return item;
         });
 
@@ -31,10 +35,16 @@ class App extends Component {
       });
   }
 
+  deleteAppointment(apt) {
+    let itemApts = this.state.appointments;
+    itemApts = without(itemApts, apt);
+
+    this.setState({appointments: itemApts});
+  }
+
   render() {
-    
     const { appointments } = this.state;
-    
+
     return (
       <main className="page bg-white" id="petratings">
         <div className="container">
@@ -43,7 +53,10 @@ class App extends Component {
               <div className="container">
                 <AddAppointments />
                 <SearchAppointments />
-                <ListAppointments appointments={appointments}/>
+                <ListAppointments
+                  appointments={appointments}
+                  deleteAppointment={this.deleteAppointment}
+                />
               </div>
             </div>
           </div>
