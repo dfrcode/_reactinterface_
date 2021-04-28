@@ -5,12 +5,12 @@ import AddAppointments from "./AddAppointments";
 import SearchAppointments from "./SearchAppointments";
 import ListAppointments from "./ListAppointments";
 
-class App extends React.Component {
+class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      appointment: [],
+      appointments: [],
     };
   }
 
@@ -23,12 +23,15 @@ class App extends React.Component {
         });
 
         this.setState({
-          appointment: apts,
+          appointments: apts,
         });
       });
   }
 
   render() {
+    
+    const { appointments } = this.state;
+    
     return (
       <main className="page bg-white" id="petratings">
         <div className="container">
@@ -37,7 +40,7 @@ class App extends React.Component {
               <div className="container">
                 <AddAppointments />
                 <SearchAppointments />
-                <ListAppointments />
+                <ListAppointments appointments={appointments}/>
               </div>
             </div>
           </div>
